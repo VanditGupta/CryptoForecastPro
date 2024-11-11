@@ -1,0 +1,60 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python dependencies
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+env/
+.venv/
+
+# Environment variables
+.env
+
+# Logs and temporary files
+logs/
+*.log
+*.temp
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# AWS credentials
+.aws/
+
+# Data files (raw, processed, temporary)
+data/raw/
+data/processed/
+data/synthetic/
+
+# Docker files
+docker/*.log
+docker-compose.yml
+*.pid
+
+# Airflow-related files
+airflow.cfg
+dags/__pycache__/
+dags/*.pyc
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# MacOS system files
+.DS_Store
+
+# Tableau settings and exports
+config/tableau_config.json
+*.twbx
+*.twb
+
+# Miscellaneous
+*.bak
+*.swp
