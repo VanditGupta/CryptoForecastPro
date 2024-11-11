@@ -1,0 +1,27 @@
+# Data processing and analysis
+pandas
+numpy
+
+# API requests
+requests
+
+# AWS SDK for Python
+boto3
+
+# Machine learning
+scikit-learn
+tensorflow
+
+
+# Natural Language Processing
+nltk
+textblob
+
+# Airflow for pipeline scheduling
+apache-airflow
+
+# For Twitter data (Rettiwt API)
+tweepy
+
+# Logging and utilities
+python-dotenv  # To load environment variables from .env file

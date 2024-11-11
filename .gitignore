@@ -58,3 +58,6 @@ config/tableau_config.json
 # Miscellaneous
 *.bak
 *.swp
+
+# Virtual environment
+cryptoforecastpro/
