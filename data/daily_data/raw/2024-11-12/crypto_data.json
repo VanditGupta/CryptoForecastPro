@@ -3,21 +3,21 @@
     "symbols": [
         {
             "symbol": "BTC",
-            "last": "86922.93",
+            "last": "86444.01",
             "last_btc": "1",
-            "lowest": "85391.99",
+            "lowest": "85100",
             "highest": "89916",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "-0.01042194018567"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "-0.56133536112542"
         },
         {
             "symbol": "ETH",
-            "last": "3270.9098559",
-            "last_btc": "0.03763",
-            "lowest": "3215.8623434",
+            "last": "3271.9057785",
+            "last_btc": "0.03785",
+            "lowest": "3209.121",
             "highest": "3436.18",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "-2.4472952452472"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "-2.4175925179828"
         },
         {
             "symbol": "USDT",
@@ -30,21 +30,21 @@
         },
         {
             "symbol": "SOL",
-            "last": "213.056793723",
-            "last_btc": "0.0024511",
-            "lowest": "209.39572",
+            "last": "210.759140781",
+            "last_btc": "0.0024381",
+            "lowest": "204.99739",
             "highest": "225.017",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "-2.6515511668212"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "-3.7013789894979"
         },
         {
             "symbol": "BNB",
-            "last": "624.71509791",
-            "last_btc": "0.007187",
-            "lowest": "616.18859984",
+            "last": "626.02752042",
+            "last_btc": "0.007242",
+            "lowest": "612.8051",
             "highest": "666.947",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "-2.0946733629583"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "-1.8889905565763"
         },
         {
             "symbol": "USDC",
@@ -52,44 +52,44 @@
             "last_btc": "0.00000001",
             "lowest": "1",
             "highest": "1",
-            "date": "2024-11-12 14:16:56",
+            "date": "2024-11-12 17:49:48",
             "daily_change_percentage": "0"
         },
         {
             "symbol": "XRP",
-            "last": "0.6414912234",
-            "last_btc": "0.00000738",
+            "last": "0.6604322364",
+            "last_btc": "0.00000764",
             "lowest": "0.59768268",
             "highest": "0.697403",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "3.6408828766053"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "6.7010390226126"
         },
         {
             "symbol": "DOGE",
-            "last": "0.3868070385",
-            "last_btc": "0.00000445",
+            "last": "0.3743025633",
+            "last_btc": "0.00000433",
             "lowest": "0.3182222502",
             "highest": "0.435745",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "20.257735774642"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "16.370112942251"
         },
         {
             "symbol": "ADA",
-            "last": "0.5841220896",
-            "last_btc": "0.00000672",
-            "lowest": "0.5644410539",
+            "last": "0.5800393071",
+            "last_btc": "0.00000671",
+            "lowest": "0.5574009306",
             "highest": "0.653407",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "-3.7349620971415"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "-4.4078166580446"
         },
         {
             "symbol": "TRX",
-            "last": "0.17384586",
-            "last_btc": "0.000002",
+            "last": "0.1772102205",
+            "last_btc": "0.00000205",
             "lowest": "0.1648410508",
             "highest": "0.180091",
-            "date": "2024-11-12 14:16:56",
-            "daily_change_percentage": "4.1558104789733"
+            "date": "2024-11-12 17:49:48",
+            "daily_change_percentage": "6.171490890465"
         }
     ]
 }
