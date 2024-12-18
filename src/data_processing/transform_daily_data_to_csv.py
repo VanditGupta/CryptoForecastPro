@@ -3,8 +3,8 @@ import csv
 import os
 
 # Define directories for raw and processed data storage
-RAW_DATA_DIR = "data/daily_data/raw"
-PROCESSED_DATA_DIR = "data/daily_data/processed_csv"
+RAW_DATA_DIR = "data/crypto/daily_crypto_data/raw"
+PROCESSED_DATA_DIR = "data/crypto/daily_crypto_data/processed_csv"
 
 def process_daily_data_to_historical(daily_data):
     """

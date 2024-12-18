@@ -11,7 +11,7 @@ ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 HEADERS = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
 
 # Define base directory for data storage
-BASE_DATA_DIR = "data/daily_data/raw"
+BASE_DATA_DIR = "data/crypto/daily_crypto_data/raw"
 
 # Create a unique timestamped folder based on current date and time
 current_datetime = datetime.now().strftime("%Y-%m-%d")
