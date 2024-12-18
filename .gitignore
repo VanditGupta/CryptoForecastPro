@@ -61,3 +61,6 @@ config/tableau_config.json
 
 # Virtual environment
 cryptoforecastpro/
+
+# Data
+data/
