@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime
 from dotenv import load_dotenv
 from logging.handlers import RotatingFileHandler
+import subprocess
 
 # Load environment variables from .env file
 load_dotenv()
@@ -107,3 +108,18 @@ for crypto in crypto_list:
     df = pd.DataFrame(crypto_posts)
     df.to_csv(output_file, index=False)
     logging.info(f"Fetched {len(crypto_posts)} posts for {symbol}. Saved to {output_file}")
+
+# Call combine_reddit_daily_data.py at the end of the script
+if __name__ == "__main__":
+    # Get the directory of the current script
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the absolute path to the combine_reddit_daily_data.py script
+    combine_script_path = os.path.join(current_script_dir, "..", "data_processing", "combine_reddit_daily_data.py")
+
+    try:
+        logging.info("Triggering combine_reddit_daily_data.py...")
+        subprocess.run(["python3", combine_script_path], check=True)
+        logging.info("combine_reddit_daily_data.py executed successfully.")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed to execute combine_reddit_daily_data.py: {e}")
