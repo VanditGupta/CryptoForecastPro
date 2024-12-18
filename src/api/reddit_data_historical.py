@@ -36,7 +36,7 @@ subreddits = [
 ]
 
 # Define base output directory
-base_output_dir = "data/reddit_posts"
+base_output_dir = "data/historical_reddit_posts"
 os.makedirs(base_output_dir, exist_ok=True)
 
 # Fetch posts for each cryptocurrency

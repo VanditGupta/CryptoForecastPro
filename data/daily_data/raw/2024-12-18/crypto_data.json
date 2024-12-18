@@ -1,0 +1,95 @@
+{
+    "status": "success",
+    "symbols": [
+        {
+            "symbol": "BTC",
+            "last": "103883.45",
+            "last_btc": "1",
+            "lowest": "103267.67",
+            "highest": "106799",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-2.6535765001468"
+        },
+        {
+            "symbol": "ETH",
+            "last": "3847.842988",
+            "last_btc": "0.03704",
+            "lowest": "3807.707408",
+            "highest": "3950.27",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-2.2577520619528"
+        },
+        {
+            "symbol": "USDT",
+            "last": "1",
+            "last_btc": "1",
+            "lowest": "1",
+            "highest": "1",
+            "date": "2024-03-14 09:28:13",
+            "daily_change_percentage": "0"
+        },
+        {
+            "symbol": "SOL",
+            "last": "216.212624485",
+            "last_btc": "0.0020813",
+            "lowest": "213.728272336",
+            "highest": "226.704",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-4.4936781228225"
+        },
+        {
+            "symbol": "BNB",
+            "last": "713.99095185",
+            "last_btc": "0.006873",
+            "lowest": "703.37347876",
+            "highest": "736.172",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-1.8682944097256"
+        },
+        {
+            "symbol": "USDC",
+            "last": "1",
+            "last_btc": "0.00000001",
+            "lowest": "1",
+            "highest": "1",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "0"
+        },
+        {
+            "symbol": "XRP",
+            "last": "2.51397949",
+            "last_btc": "0.0000242",
+            "lowest": "2.4702407232",
+            "highest": "2.62486",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-3.7276890602188"
+        },
+        {
+            "symbol": "DOGE",
+            "last": "0.3854075995",
+            "last_btc": "0.00000371",
+            "lowest": "0.3782358924",
+            "highest": "0.401083",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-3.691938350812"
+        },
+        {
+            "symbol": "ADA",
+            "last": "1.026368486",
+            "last_btc": "0.00000988",
+            "lowest": "1.0137962034",
+            "highest": "1.08123",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-4.3953614136631"
+        },
+        {
+            "symbol": "TRX",
+            "last": "0.2732134735",
+            "last_btc": "0.00000263",
+            "lowest": "0.2697255954",
+            "highest": "0.28733",
+            "date": "2024-12-18 12:04:50",
+            "daily_change_percentage": "-4.4697411176814"
+        }
+    ]
+}
