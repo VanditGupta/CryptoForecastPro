@@ -3,6 +3,7 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime
+import subprocess
 
 # Load environment variables from .env file
 load_dotenv()
@@ -105,6 +106,22 @@ if __name__ == "__main__":
     get_crypto_conversion(from_currency, to_currency, amount)
     
     
+    # Get the directory of the current script
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the absolute path to transform_daily_data_to_csv.py
+    transform_script_path = os.path.join(current_script_dir, "..", "data_processing", "transform_daily_data_to_csv.py")
+
+    
+    # Trigger the transform_daily_data_to_csv.py script
+    try:
+        print("Triggering transform_daily_data_to_csv.py...")
+        subprocess.run(["python3", transform_script_path], check=True)
+        print("transform_daily_data_to_csv.py executed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to execute transform_daily_data_to_csv.py: {e}")
+    
+    # Uncomment additional APIs as needed
     # exchange = "binance"
     # local_currency = "EUR"
     # symbol = "BTC"
@@ -112,13 +129,11 @@ if __name__ == "__main__":
     # start_date = "2022-05-05"
     # end_date = "2022-05-10"
 
-
     # The following APIs are not used because of high token usage
-
     # get_crypto_list()
     # get_exchange_pairs(exchange)
 
-    # The following APIs are not used because of it requires a paid plan
+    # The following APIs are not used because they require a paid plan
     # get_data_in_currency(symbols, local_currency)
 
     # Not required as the historical data has been fetched from https://coincodex.com/
