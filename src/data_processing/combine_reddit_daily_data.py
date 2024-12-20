@@ -1,9 +1,11 @@
 import os
 import pandas as pd
+from datetime import datetime
 
-# Define input directory and output file path
-INPUT_DIR = "data/reddit_posts/daily_reddit_posts"
-OUTPUT_DIR = "data/reddit_posts/daily_reddit_posts/combined"
+# Define input directory with date-based folder structure and output file path
+CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
+INPUT_DIR = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}"
+OUTPUT_DIR = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}/combined"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "merged_daily_reddit_posts.csv")
 
@@ -31,9 +33,10 @@ for folder_name in os.listdir(INPUT_DIR):
                 all_data.append(df)
 
 # Concatenate all DataFrames into a single DataFrame
-merged_df = pd.concat(all_data, ignore_index=True)
-
-# Save the merged DataFrame to a CSV file
-merged_df.to_csv(OUTPUT_FILE, index=False)
-
-print(f"Merged daily Reddit posts saved to: {OUTPUT_FILE}")
+if all_data:
+    merged_df = pd.concat(all_data, ignore_index=True)
+    # Save the merged DataFrame to a CSV file
+    merged_df.to_csv(OUTPUT_FILE, index=False)
+    print(f"Merged daily Reddit posts saved to: {OUTPUT_FILE}")
+else:
+    print("No data to merge. Ensure the input directory has valid CSV files.")

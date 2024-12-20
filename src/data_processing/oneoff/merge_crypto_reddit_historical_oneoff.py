@@ -1,11 +1,10 @@
 import os
 import pandas as pd
-from datetime import timedelta
 
 # Define file paths
 CRYPTO_DATA_PATH = "data/crypto/historical_crypto_data/combined/filtered_combined_historical_data.csv"
 REDDIT_DATA_PATH = "data/reddit_posts/historical_reddit_posts/combined/merged_historical_reddit_posts.csv"
-OUTPUT_PATH = "data/merged/historical/crypto_reddit_combined_3day.csv"
+OUTPUT_PATH = "data/merged/crypto_reddit_daily_merged.csv"
 
 # Create output directory if it doesn't exist
 os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
@@ -18,37 +17,33 @@ reddit_df = pd.read_csv(REDDIT_DATA_PATH)
 crypto_df["Date"] = pd.to_datetime(crypto_df["Date"], errors="coerce")
 reddit_df["Created_At"] = pd.to_datetime(reddit_df["Created_At"], errors="coerce")
 
-# Add Price_Difference column
-crypto_df["Price_Difference"] = crypto_df["Close"] - crypto_df["Open"]
-
-# Ensure Title and Content columns are strings
-reddit_df["Title"] = reddit_df["Title"].astype(str)
-reddit_df["Content"] = reddit_df["Content"].astype(str)
-
-# Aggregate Reddit data over a 3-day window
+# Round Reddit timestamps to the nearest day
 reddit_df["Date"] = reddit_df["Created_At"].dt.floor("D")
-reddit_df["Window_End"] = reddit_df["Date"] + timedelta(days=2)  # Create 3-day window
 
-aggregated_reddit = reddit_df.groupby(["Crypto", "Window_End"]).agg({
-    "Subreddit": lambda x: ", ".join(x.unique()),  # Unique subreddits
-    "Score": "mean",       # Average sentiment score
-    "Comments": "sum",     # Total comments
-    "Title": lambda x: " | ".join(x),  # Concatenate titles
-    "Content": lambda x: " | ".join(x)  # Concatenate content
+# Ensure Title and Content columns are strings and replace NaN with empty strings
+reddit_df["Title"] = reddit_df["Title"].fillna("").astype(str)
+reddit_df["Content"] = reddit_df["Content"].fillna("").astype(str)
+
+# Aggregate Reddit data by Crypto and Date
+aggregated_reddit = reddit_df.groupby(["Crypto", "Date"]).agg({
+    "Subreddit": lambda x: ", ".join(x.unique()),  # Concatenate unique subreddit names
+    "Score": "mean",       # Average sentiment score across posts
+    "Comments": "sum",     # Total comments across posts
+    "Title": lambda x: " | ".join(x),  # Concatenate all titles with a delimiter
+    "Content": lambda x: " | ".join(x)  # Concatenate all content with a delimiter
 }).reset_index()
 
 # Merge with cryptocurrency data
-crypto_df["Window_End"] = crypto_df["Date"]  # Align price data to the window
 merged_df = pd.merge(
     crypto_df,
     aggregated_reddit,
-    left_on=["Symbol", "Window_End"],
-    right_on=["Crypto", "Window_End"],
-    how="left"
+    left_on=["Symbol", "Date"],
+    right_on=["Crypto", "Date"],
+    how="inner"  # Inner join to ensure only matching dates are retained
 )
 
 # Drop redundant columns
-merged_df = merged_df.drop(columns=["Crypto", "Window_End", "Open", "Close"])  # Drop Open/Close for simplicity
+merged_df = merged_df.drop(columns=["Crypto"])
 
 # Save the combined dataset
 merged_df.to_csv(OUTPUT_PATH, index=False)

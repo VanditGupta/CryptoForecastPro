@@ -57,6 +57,11 @@ subreddits = [
 base_output_dir = "data/reddit_posts/daily_reddit_posts"
 os.makedirs(base_output_dir, exist_ok=True)
 
+# Get the current date in YYYY-MM-DD format
+current_date = datetime.now().strftime("%Y-%m-%d")
+date_folder = os.path.join(base_output_dir, current_date)
+os.makedirs(date_folder, exist_ok=True)
+
 # Helper function to clean text
 def clean_text(text):
     """Cleans the input text by removing unwanted characters."""
@@ -69,8 +74,8 @@ for crypto in crypto_list:
     crypto_posts = []
     seen_post_ids = set()  # Track unique post IDs
 
-    # Create a folder for the cryptocurrency
-    crypto_folder = os.path.join(base_output_dir, symbol.lower())
+    # Create a folder for the cryptocurrency within the date folder
+    crypto_folder = os.path.join(date_folder, symbol.lower())
     os.makedirs(crypto_folder, exist_ok=True)
     output_file = os.path.join(crypto_folder, f"{symbol.lower()}.csv")
 

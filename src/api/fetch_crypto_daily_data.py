@@ -12,17 +12,20 @@ ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 HEADERS = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
 
 # Define base directory for data storage
-BASE_DATA_DIR = "data/crypto/daily_crypto_data/raw"
+BASE_DATA_DIR = "data/crypto/daily_crypto_data"
 
-# Create a unique timestamped folder based on current date and time
-current_datetime = datetime.now().strftime("%Y-%m-%d")
-output_dir = os.path.join(BASE_DATA_DIR, current_datetime)
-os.makedirs(output_dir, exist_ok=True)
+# Create a unique folder for the current date with raw and processed_csv subfolders
+current_date = datetime.now().strftime("%Y-%m-%d")
+date_dir = os.path.join(BASE_DATA_DIR, current_date)
+raw_dir = os.path.join(date_dir, "raw")
+processed_csv_dir = os.path.join(date_dir, "processed_csv")
+os.makedirs(raw_dir, exist_ok=True)
+os.makedirs(processed_csv_dir, exist_ok=True)
 
 
 def save_to_file(filename, data):
-    """Helper function to save data to a JSON file in the output directory."""
-    file_path = os.path.join(output_dir, filename)
+    """Helper function to save data to a JSON file in the raw directory."""
+    file_path = os.path.join(raw_dir, filename)
     with open(file_path, 'w') as f:
         json.dump(data, f, indent=4)
     print(f"Data saved to {file_path}")
@@ -105,37 +108,16 @@ if __name__ == "__main__":
     get_crypto_data(symbols)
     get_crypto_conversion(from_currency, to_currency, amount)
     
-    
     # Get the directory of the current script
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # Construct the absolute path to transform_daily_data_to_csv.py
-    transform_script_path = os.path.join(current_script_dir, "..", "data_processing", "transform_daily_data_to_csv.py")
-
+    # Construct the absolute path to transform_crypto_daily_data_to_csv.py
+    transform_script_path = os.path.join(current_script_dir, "..", "data_processing", "transform_crypto_daily_data_to_csv.py")
     
-    # Trigger the transform_daily_data_to_csv.py script
+    # Trigger the transform_crypto_daily_data_to_csv.py script
     try:
-        print("Triggering transform_daily_data_to_csv.py...")
+        print("Triggering transform_crypto_daily_data_to_csv.py...")
         subprocess.run(["python3", transform_script_path], check=True)
-        print("transform_daily_data_to_csv.py executed successfully.")
+        print("transform_crypto_daily_data_to_csv.py executed successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"Failed to execute transform_daily_data_to_csv.py: {e}")
-    
-    # Uncomment additional APIs as needed
-    # exchange = "binance"
-    # local_currency = "EUR"
-    # symbol = "BTC"
-    # days = 5
-    # start_date = "2022-05-05"
-    # end_date = "2022-05-10"
-
-    # The following APIs are not used because of high token usage
-    # get_crypto_list()
-    # get_exchange_pairs(exchange)
-
-    # The following APIs are not used because they require a paid plan
-    # get_data_in_currency(symbols, local_currency)
-
-    # Not required as the historical data has been fetched from https://coincodex.com/
-    # get_historical_data(symbol, days)
-    # get_historical_timeframe("ETHBTC@binance", start_date, end_date)
+        print(f"Failed to execute transform_crypto_daily_data_to_csv.py: {e}")
