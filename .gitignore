@@ -64,3 +64,6 @@ cryptoforecastpro/
 
 # Data
 data/
+
+# cache
+cache/
