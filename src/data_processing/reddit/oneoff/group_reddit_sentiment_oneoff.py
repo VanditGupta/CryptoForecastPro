@@ -1,11 +1,9 @@
 import pandas as pd
-from datetime import datetime
 import os
 
 # File paths
-CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
-reddit_posts_path = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}/combined/sentiment_analysis/sentiment_analyzed_reddit_posts.csv"
-output_path = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}/combined/grouped/grouped_reddit_data.csv"
+reddit_posts_path = f"data/reddit_posts/historical_reddit_posts/combined/sentiment_analysis/sentiment_analyzed_historical_reddit_posts.csv"
+output_path = f"data/reddit_posts/historical_reddit_posts/combined/grouped/grouped_historical_reddit_data.csv"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Load Reddit posts
