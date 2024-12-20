@@ -16,16 +16,27 @@ reddit_posts['Created_At'] = pd.to_datetime(reddit_posts['Created_At']).dt.date
 reddit_posts['Title'] = reddit_posts['Title'].fillna(' ').astype(str)
 reddit_posts['Content'] = reddit_posts['Content'].fillna(' ').astype(str)
 
+# Define a function to calculate sentiment label based on average sentiment score
+def calculate_average_label(score):
+    if score >= 0.05:
+        return 'Positive'
+    elif score <= -0.05:
+        return 'Negative'
+    else:
+        return 'Neutral'
+
 # Group Reddit data by Crypto and Created_At
 aggregated_reddit = reddit_posts.groupby(['Crypto', 'Created_At']).agg({
     'Sentiment_Score': 'mean',         # Average sentiment
-    'Sentiment_Label': lambda x: '|'.join(x),  # Combine sentiment labels with '|'
     'Score': 'sum',                   # Total score
     'Comments': 'sum',                # Total number of comments
     'Title': '|'.join,                # Combine titles with '|'
     'Content': '|'.join,              # Combine content with '|'
     'Crypto': 'count'                 # Count number of rows combined
 }).rename(columns={'Crypto': 'Row_Count'}).reset_index()
+
+# Calculate the average sentiment label
+aggregated_reddit['Sentiment_Label'] = aggregated_reddit['Sentiment_Score'].apply(calculate_average_label)
 
 # Save grouped dataset
 aggregated_reddit.to_csv(output_path, index=False)

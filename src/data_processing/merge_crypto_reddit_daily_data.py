@@ -5,8 +5,8 @@ import os
 # File paths
 CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
 crypto_data_path = f"data/crypto/daily_crypto_data/{CURRENT_DATE}/processed_csv/processed_crypto_data.csv"
-grouped_reddit_path = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}/combined/grouped/grouped_reddit_data.csv"
-output_path = f"data/crypto_reddit_merged/{CURRENT_DATE}/merged_crypto_reddit_data.csv"
+grouped_reddit_path = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}/combined/grouped/grouped_daily_reddit_data.csv"
+output_path = f"data/daily_crypto_reddit_merged/{CURRENT_DATE}/merged_crypto_reddit_data.csv"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Function to find the closest date with tolerance
