@@ -119,12 +119,16 @@ if __name__ == "__main__":
     # Get the directory of the current script
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # Construct the absolute path to the combine_reddit_daily_data.py script
-    combine_script_path = os.path.join(current_script_dir, "..", "data_processing", "combine_reddit_daily_data.py")
+    # Construct the absolute path to combine_reddit_daily_data.py in the reddit folder
+    combine_script_path = os.path.join(current_script_dir, "..", "..", "data_processing", "reddit", "combine_reddit_daily_data.py")
 
-    try:
-        logging.info("Triggering combine_reddit_daily_data.py...")
-        subprocess.run(["python3", combine_script_path], check=True)
-        logging.info("combine_reddit_daily_data.py executed successfully.")
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Failed to execute combine_reddit_daily_data.py: {e}")
+    # Check if the script exists
+    if os.path.exists(combine_script_path):
+        try:
+            logging.info(f"Triggering {combine_script_path}...")
+            subprocess.run(["python3", combine_script_path], check=True)
+            logging.info("combine_reddit_daily_data.py executed successfully.")
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Failed to execute combine_reddit_daily_data.py: {e}")
+    else:
+        logging.error(f"combine_reddit_daily_data.py not found at: {combine_script_path}")

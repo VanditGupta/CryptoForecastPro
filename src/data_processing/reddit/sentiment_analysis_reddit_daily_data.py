@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from datetime import datetime
+import subprocess
 
 # Get the current date in YYYY-MM-DD format
 CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
@@ -40,3 +41,12 @@ reddit_posts['Sentiment_Score'] = results.apply(lambda x: x[1])  # Compound scor
 # Save the results
 reddit_posts.to_csv(output_path, index=False)
 print(f"Sentiment-analyzed Reddit data saved to '{output_path}'")
+
+# Call the group_reddit_sentiment_daily_data.py script
+group_script_path = os.path.join(os.path.dirname(__file__), "group_reddit_sentiment_daily_data.py")
+try:
+    print("Calling group_reddit_sentiment_daily_data.py...")
+    subprocess.run(["python3", group_script_path], check=True)
+    print("Grouping of Reddit sentiment data completed successfully.")
+except subprocess.CalledProcessError as e:
+    print(f"Error while running group_reddit_sentiment_daily_data.py: {e}")

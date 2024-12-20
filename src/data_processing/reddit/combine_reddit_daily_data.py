@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from datetime import datetime
+import subprocess
 
 # Define input directory with date-based folder structure and output file path
 CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
@@ -40,3 +41,12 @@ if all_data:
     print(f"Merged daily Reddit posts saved to: {OUTPUT_FILE}")
 else:
     print("No data to merge. Ensure the input directory has valid CSV files.")
+
+# Call the sentiment_analysis_reddit_daily_data.py script
+script_path = os.path.join(os.path.dirname(__file__), "sentiment_analysis_reddit_daily_data.py")
+try:
+    print("Calling sentiment_analysis_reddit_daily_data.py...")
+    subprocess.run(["python3", script_path], check=True)
+    print("Sentiment analysis completed successfully.")
+except subprocess.CalledProcessError as e:
+    print(f"Error while running sentiment analysis script: {e}")
