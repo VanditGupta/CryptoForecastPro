@@ -15,7 +15,7 @@ def main():
     next_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
     # Define file paths
-    historical_data_path = "data/historical_crypto_reddit_merged/engineered_historical_data.csv"
+    historical_data_path = "data/historical_crypto_reddit_merged_historical/engineered_historical_data.csv"
     daily_data_path = f"data/daily_crypto_reddit_merged/{CURRENT_DATE}/engineered_daily_data.csv"
     output_path = f"results/{CURRENT_DATE}/price_change/crypto_prediction_results_{next_date}.csv"
     plot_path = f"results/{CURRENT_DATE}/plots/predicted_vs_actual.png"
