@@ -45,14 +45,20 @@ aggregated_reddit['Sentiment_Label'] = aggregated_reddit['Sentiment_Score'].appl
 aggregated_reddit.to_csv(output_path, index=False)
 print(f"Grouped Reddit data saved to '{output_path}'")
 
-# Call the merge_crypto_reddit_daily_data.py script
-merge_script_path = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../merge_crypto_reddit_daily_data.py")
-)
+# # Call the merge_crypto_reddit_daily_data.py script
+# merge_script_path = os.path.abspath(
+#     os.path.join(os.path.dirname(__file__), "../merge_crypto_reddit_daily_data.py")
+# )
+# merge_script_dir = os.path.dirname(merge_script_path)  # Directory of the script
 
-try:
-    print("Calling merge_crypto_reddit_daily_data.py...")
-    subprocess.run(["python3", merge_script_path], check=True, cwd=os.path.dirname(merge_script_path))
-    print("Merging of crypto and Reddit data completed successfully.")
-except subprocess.CalledProcessError as e:
-    print(f"Error while running merge_crypto_reddit_daily_data.py: {e}")
+# try:
+#     print("Calling merge_crypto_reddit_daily_data.py...")
+#     subprocess.run(
+#         ["python3", merge_script_path],
+#         check=True,
+#         cwd=merge_script_dir  # Set working directory
+#     )
+#     print("Merging of crypto and Reddit data completed successfully.")
+# except subprocess.CalledProcessError as e:
+#     print(f"Error while running merge_crypto_reddit_daily_data.py: {e}")
+    
