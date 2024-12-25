@@ -96,12 +96,18 @@ def main():
     latest_data.loc[:, 'Symbol'] = label_encoder.transform(latest_data['Symbol'])
     next_day_prediction = rf_best_model.predict(latest_data)
 
-    print(f"\nPredicted Price Change for the Next Day: {next_day_prediction[0]}")
+    # Retrieve the corresponding Symbol
+    symbol = daily_data.tail(1)['Symbol'].values[0]
+
+    print(f"\nPredicted Price Change for the Next Day: {next_day_prediction[0]} for (Crypto: {symbol}) based on data till {CURRENT_DATE}")
     
     # Saving next day prediction
     print(f"Saving next day prediction to '{output_path}'")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    next_day_prediction_df = pd.DataFrame({"Predicted_Price_Change": [next_day_prediction[0]]})
+    next_day_prediction_df = pd.DataFrame({
+        "Symbol": [symbol],
+        "Predicted_Price_Change": [next_day_prediction[0]]
+    })
     next_day_prediction_df.to_csv(output_path, index=False)
     
     # Save the Model
