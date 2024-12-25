@@ -6,7 +6,7 @@ from datetime import datetime
 CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 daily_data_path = os.path.normpath(
-    os.path.join(current_script_dir, "..", "..", f"data/daily_crypto_reddit_merged/{CURRENT_DATE}/cleaned_daily_data.csv")
+    os.path.join(current_script_dir, "..", "..", f"data/daily_crypto_reddit_merged/{CURRENT_DATE}/merged_crypto_reddit_data.csv")
 )
 output_path = os.path.normpath(
     os.path.join(current_script_dir, "..", "..", f"data/daily_crypto_reddit_merged/{CURRENT_DATE}/engineered_daily_data.csv")
