@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import os
+import subprocess
 
 # File paths
 CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
@@ -56,3 +57,14 @@ merged_data = merged_data.drop(columns=['Closest_Reddit_Date', 'Crypto', 'Create
 merged_data.to_csv(output_path, index=False)
 
 print(f"Final merged data saved to '{output_path}' with {len(merged_data)} rows")
+
+
+# Call feature_engineering_daily.py script
+script_path = os.path.join(os.path.dirname(__file__), "feature_engineering_daily.py")
+try:
+    print("Calling feature_engineering_daily.py...")
+    subprocess.run(["python3", script_path], check=True)
+    print("Feature engineering completed successfully.")
+    print(f"Engineered daily data saved to '{output_path}'")
+except subprocess.CalledProcessError as e:
+    print(f"Error while running feature_engineering_daily.py or sentiment_analysis_daily_data.py: {e}")
