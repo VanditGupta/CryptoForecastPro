@@ -76,3 +76,6 @@ scripts/api/crypto/crypto_lambda_package/
 
 #reddit_lambda_package
 scripts/api/reddit/reddit_lambda_package
+
+#sentiment_lambda_package
+scripts/data_processing/reddit/sentiment_lambda_package/
