@@ -1,52 +1,65 @@
-import os
+import boto3
 import pandas as pd
+import os
 from datetime import datetime
-import subprocess
+import json
+import io
 
-# Define input directory with date-based folder structure and output file path
-CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
-INPUT_DIR = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}"
-OUTPUT_DIR = f"data/reddit_posts/daily_reddit_posts/{CURRENT_DATE}/combined"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-OUTPUT_FILE = os.path.join(OUTPUT_DIR, "merged_daily_reddit_posts.csv")
+# Initialize AWS S3 client
+s3 = boto3.client('s3')
 
-# Initialize an empty list to store DataFrames
-all_data = []
+# S3 bucket and folder paths
+BUCKET_NAME = "crypto-sentiment-forecasting"
+BASE_INPUT_PATH = "cryptoforecastpro/data/reddit_posts/daily_reddit_posts/"
+BASE_OUTPUT_PATH = "cryptoforecastpro/data/reddit_posts/daily_reddit_posts/"
 
-# Iterate over each folder (cryptocurrency) in the input directory
-for folder_name in os.listdir(INPUT_DIR):
-    folder_path = os.path.join(INPUT_DIR, folder_name)
-    
-    # Check if it's a directory
-    if os.path.isdir(folder_path):
-        print(f"Processing folder: {folder_name}")
-        
-        # Find all CSV files in this folder
-        for filename in os.listdir(folder_path):
-            if filename.endswith(".csv"):
-                file_path = os.path.join(folder_path, filename)
-                print(f"Reading file: {file_path}")
-                
-                # Read the CSV file into a DataFrame
-                df = pd.read_csv(file_path)
-                
-                # Append the DataFrame to the list
-                all_data.append(df)
+def read_csv_from_s3(bucket, key):
+    """Read a CSV file from S3 into a Pandas DataFrame."""
+    response = s3.get_object(Bucket=bucket, Key=key)
+    return pd.read_csv(response['Body'])
 
-# Concatenate all DataFrames into a single DataFrame
-if all_data:
-    merged_df = pd.concat(all_data, ignore_index=True)
-    # Save the merged DataFrame to a CSV file
-    merged_df.to_csv(OUTPUT_FILE, index=False)
-    print(f"Merged daily Reddit posts saved to: {OUTPUT_FILE}")
-else:
-    print("No data to merge. Ensure the input directory has valid CSV files.")
+def write_csv_to_s3(dataframe, bucket, key):
+    """Write a Pandas DataFrame to S3 as a CSV file."""
+    csv_buffer = io.StringIO()
+    dataframe.to_csv(csv_buffer, index=False)
+    s3.put_object(Bucket=bucket, Key=key, Body=csv_buffer.getvalue())
+    print(f"File saved to s3://{bucket}/{key}")
 
-# Call the sentiment_analysis_reddit_daily_data.py script
-script_path = os.path.join(os.path.dirname(__file__), "sentiment_analysis_reddit_daily_data.py")
-try:
-    print("Calling sentiment_analysis_reddit_daily_data.py...")
-    subprocess.run(["python3", script_path], check=True)
-    print("Sentiment analysis completed successfully.")
-except subprocess.CalledProcessError as e:
-    print(f"Error while running sentiment analysis script: {e}")
+def merge_csv_files(input_prefix, output_key):
+    """Merge all CSV files from an S3 prefix into a single DataFrame."""
+    merged_data = []
+    paginator = s3.get_paginator('list_objects_v2')
+    for page in paginator.paginate(Bucket=BUCKET_NAME, Prefix=input_prefix):
+        for obj in page.get('Contents', []):
+            key = obj['Key']
+            if key.endswith('.csv'):
+                print(f"Reading file from S3: {key}")
+                df = read_csv_from_s3(BUCKET_NAME, key)
+                merged_data.append(df)
+
+    if merged_data:
+        merged_df = pd.concat(merged_data, ignore_index=True)
+        write_csv_to_s3(merged_df, BUCKET_NAME, output_key)
+        print(f"Merged file saved to S3: {output_key}")
+    else:
+        print(f"No CSV files found in S3 prefix: {input_prefix}")
+
+def lambda_handler(event, context):
+    """AWS Lambda handler function."""
+    # Get the current date
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    input_prefix = f"{BASE_INPUT_PATH}{current_date}/"
+    output_key = f"{BASE_OUTPUT_PATH}{current_date}/combined/merged_daily_reddit_posts.csv"
+
+    # Merge CSV files
+    merge_csv_files(input_prefix, output_key)
+
+    # Call the sentiment analysis Lambda function (if necessary)
+    # You can invoke another Lambda function here if sentiment analysis needs to be done
+    # response = boto3.client('lambda').invoke(
+    #     FunctionName='sentiment_analysis_reddit_daily_data',
+    #     InvocationType='Event',
+    #     Payload=json.dumps({'bucket': BUCKET_NAME, 'key': output_key})
+    # )
+
+    return {"statusCode": 200, "body": f"Merged file saved to {output_key}"}

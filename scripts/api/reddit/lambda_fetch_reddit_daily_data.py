@@ -7,12 +7,16 @@ from datetime import datetime
 from dotenv import load_dotenv
 import io
 import os
+import json
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Initialize AWS S3 client
 s3 = boto3.client('s3')
+
+# Initialize AWS Lambda client
+lambda_client = boto3.client('lambda')
 
 # Set up Reddit API credentials using environment variables
 reddit = praw.Reddit(
@@ -115,4 +119,22 @@ def lambda_handler(event, context):
         fetch_reddit_posts(crypto["symbol"], crypto["keywords"], subreddits, current_date)
 
     logging.info("Reddit data fetching completed.")
-    return {"statusCode": 200, "body": "Reddit data fetching completed successfully."}
+
+    # Invoke the combine_reddit_daily_data Lambda function synchronously
+    try:
+        response = lambda_client.invoke(
+            FunctionName="combine_reddit_daily_data",  # Replace with the actual function name
+            InvocationType="RequestResponse",  # Synchronous invocation
+            Payload=json.dumps({
+                "bucket": BUCKET_NAME,
+                "current_date": current_date
+            })
+        )
+        combine_response = json.loads(response['Payload'].read())
+        logging.info("combine_reddit_daily_data Lambda function completed successfully.")
+        logging.info(f"Response: {combine_response}")
+    except Exception as e:
+        logging.error(f"Error invoking combine_reddit_daily_data Lambda function: {e}")
+        return {"statusCode": 500, "body": "Error in invoking combine_reddit_daily_data Lambda"}
+
+    return {"statusCode": 200, "body": "Reddit data fetching and combining completed successfully."}
