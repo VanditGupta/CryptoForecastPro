@@ -73,3 +73,6 @@ pythonDependencies/
 
 #crypto_lambda_package
 scripts/api/crypto/crypto_lambda_package/
+
+#reddit_lambda_package
+scripts/api/reddit/reddit_lambda_package
