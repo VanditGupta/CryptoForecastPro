@@ -67,3 +67,6 @@ data/
 
 # cache
 cache/
+
+#pythonDependencies
+pythonDependencies/

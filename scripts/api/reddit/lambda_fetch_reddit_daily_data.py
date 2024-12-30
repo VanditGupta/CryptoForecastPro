@@ -5,9 +5,8 @@ import praw
 import pandas as pd
 from datetime import datetime
 from dotenv import load_dotenv
-from logging.handlers import RotatingFileHandler
-import os
 import io
+import os
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,20 +25,8 @@ reddit = praw.Reddit(
 BUCKET_NAME = "crypto-sentiment-forecasting"
 BASE_S3_PATH = "cryptoforecastpro/data/reddit_posts/daily_reddit_posts/"
 
-# Get the current date in YYYY-MM-DD format
-current_date = datetime.now().strftime("%Y-%m-%d")
-date_s3_folder = f"{BASE_S3_PATH}{current_date}/"
-
 # Configure logging
-log_file = "reddit_data_daily.log"
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        RotatingFileHandler(log_file, maxBytes=5_000_000, backupCount=3),
-        logging.StreamHandler()
-    ]
-)
+logging.basicConfig(level=logging.INFO)
 
 # Helper function to clean text
 def clean_text(text):
@@ -47,39 +34,17 @@ def clean_text(text):
     return text.replace("\n", " ").strip()
 
 # Save data to S3
-def save_to_s3(dataframe, symbol):
+def save_to_s3(dataframe, symbol, current_date):
     """Saves the DataFrame to S3 as a CSV."""
     csv_buffer = io.StringIO()
     dataframe.to_csv(csv_buffer, index=False)
-    s3_key = f"{date_s3_folder}{symbol.lower()}.csv"
+    s3_key = f"{BASE_S3_PATH}{current_date}/{symbol.lower()}.csv"
     s3.put_object(Bucket=BUCKET_NAME, Key=s3_key, Body=csv_buffer.getvalue())
     logging.info(f"Saved data to s3://{BUCKET_NAME}/{s3_key}")
 
-# List of cryptocurrencies and their related keywords
-crypto_list = [
-    {"symbol": "BTC", "keywords": ["Bitcoin", "BTC"]},
-    {"symbol": "ETH", "keywords": ["Ethereum", "ETH"]},
-    {"symbol": "USDT", "keywords": ["Tether", "USDT"]},
-    {"symbol": "SOL", "keywords": ["Solana", "SOL"]},
-    {"symbol": "BNB", "keywords": ["Binance Coin", "BNB"]},
-    {"symbol": "USDC", "keywords": ["USD Coin", "USDC"]},
-    {"symbol": "XRP", "keywords": ["Ripple", "XRP"]},
-    {"symbol": "DOGE", "keywords": ["Dogecoin", "DOGE"]},
-    {"symbol": "ADA", "keywords": ["Cardano", "ADA"]},
-    {"symbol": "TRX", "keywords": ["Tron", "TRX"]},
-]
-
-# Expanded list of relevant subreddits
-subreddits = [
-    "cryptocurrency", "CryptoMarkets", "Bitcoin", "CryptoMoonShots",
-    "Altcoin", "CryptoCurrencyTrading", "Binance", "BitcoinBeginners",
-    "CryptoMoon", "AltStreetBets", "cryptotrading", "blockchain", "DeFi"
-]
-
-# Fetch posts for each cryptocurrency
-for crypto in crypto_list:
-    symbol = crypto["symbol"]
-    keywords = crypto["keywords"]
+# Function to fetch posts for a single cryptocurrency
+def fetch_reddit_posts(symbol, keywords, subreddits, current_date):
+    """Fetches Reddit posts for a specific cryptocurrency."""
     crypto_posts = []
     seen_post_ids = set()  # Track unique post IDs
 
@@ -111,11 +76,43 @@ for crypto in crypto_list:
             logging.error(f"Error processing subreddit '{subreddit_name}' for {symbol}: {e}")
             time.sleep(2)  # Add a delay for rate limits
 
-    # Save data to S3
-    df = pd.DataFrame(crypto_posts)
-    if not df.empty:
-        save_to_s3(df, symbol)
+    # Save data to S3 if posts were fetched
+    if crypto_posts:
+        df = pd.DataFrame(crypto_posts)
+        save_to_s3(df, symbol, current_date)
     else:
         logging.info(f"No posts fetched for {symbol}")
 
-logging.info("Reddit data fetching completed.")
+# Lambda handler
+def lambda_handler(event, context):
+    """AWS Lambda handler function."""
+    # Get the current date
+    current_date = datetime.now().strftime("%Y-%m-%d")
+
+    # List of cryptocurrencies and their related keywords
+    crypto_list = [
+        {"symbol": "BTC", "keywords": ["Bitcoin", "BTC"]},
+        {"symbol": "ETH", "keywords": ["Ethereum", "ETH"]},
+        {"symbol": "USDT", "keywords": ["Tether", "USDT"]},
+        {"symbol": "SOL", "keywords": ["Solana", "SOL"]},
+        {"symbol": "BNB", "keywords": ["Binance Coin", "BNB"]},
+        {"symbol": "USDC", "keywords": ["USD Coin", "USDC"]},
+        {"symbol": "XRP", "keywords": ["Ripple", "XRP"]},
+        {"symbol": "DOGE", "keywords": ["Dogecoin", "DOGE"]},
+        {"symbol": "ADA", "keywords": ["Cardano", "ADA"]},
+        {"symbol": "TRX", "keywords": ["Tron", "TRX"]},
+    ]
+
+    # Expanded list of relevant subreddits
+    subreddits = [
+        "cryptocurrency", "CryptoMarkets", "Bitcoin", "CryptoMoonShots",
+        "Altcoin", "CryptoCurrencyTrading", "Binance", "BitcoinBeginners",
+        "CryptoMoon", "AltStreetBets", "cryptotrading", "blockchain", "DeFi"
+    ]
+
+    # Fetch posts for each cryptocurrency
+    for crypto in crypto_list:
+        fetch_reddit_posts(crypto["symbol"], crypto["keywords"], subreddits, current_date)
+
+    logging.info("Reddit data fetching completed.")
+    return {"statusCode": 200, "body": "Reddit data fetching completed successfully."}
