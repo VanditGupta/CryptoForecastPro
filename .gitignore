@@ -70,3 +70,6 @@ cache/
 
 #pythonDependencies
 pythonDependencies/
+
+#crypto_lambda_package
+scripts/api/crypto/crypto_lambda_package/
