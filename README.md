@@ -62,7 +62,7 @@ The Cryptocurrency Price Prediction Tool is an advanced tool designed to analyze
 
 ## Contributing
 
-Contributions are welcome. Please refer to our [CONTRIBUTING.md](https://github.com/your-repo-name/CONTRIBUTING.md) for guidelines on how to contribute.
+Contributions are welcome. Please refer to our [CONTRIBUTING.md](https://github.com/VanditGupta/CryptoForecastPro/blob/main/CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## License
 
