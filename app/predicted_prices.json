@@ -1,0 +1,32 @@
+{
+    "BTC": {
+        "PredictedPrice": 104814.79
+    },
+    "ETH": {
+        "PredictedPrice": 3327.61
+    },
+    "USDT": {
+        "PredictedPrice": 1.0
+    },
+    "SOL": {
+        "PredictedPrice": 252.5
+    },
+    "BNB": {
+        "PredictedPrice": 681.4
+    },
+    "USDC": {
+        "PredictedPrice": 1.0
+    },
+    "XRP": {
+        "PredictedPrice": 3.11
+    },
+    "DOGE": {
+        "PredictedPrice": 0.3414
+    },
+    "ADA": {
+        "PredictedPrice": 0.9902
+    },
+    "TRX": {
+        "PredictedPrice": 0.2584
+    }
+}
